@@ -3,7 +3,6 @@ import tweepy
 import re
 
 api = get_api()
-
 follower_list = get_follower_list(api)
 
 
