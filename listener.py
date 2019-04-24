@@ -1,18 +1,10 @@
-from utility import get_api
+from utility import get_api, get_follower_list
 import tweepy
 import re
 
 api = get_api()
 
-
-def get_follower_list():
-    output = []
-    for friend in tweepy.Cursor(api.friends).items():
-        output.append(friend.id_str)
-    return output
-
-
-follower_list = get_follower_list()
+follower_list = get_follower_list(api)
 
 
 class MyStreamListener(tweepy.StreamListener):
