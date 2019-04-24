@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Confidential info
+credentials.py
+
+# PyCharm stuff
+.idea/*
+
 # C extensions
 *.so
 
