@@ -7,7 +7,7 @@ api = get_api()
 def get_follower_list():
     output = []
     for friend in tweepy.Cursor(api.friends).items():
-        output.append(str(friend.id))
+        output.append(friend.id_str)
     return output
 
 
