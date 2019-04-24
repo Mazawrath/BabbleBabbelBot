@@ -1,7 +1,7 @@
-import utility
+from utility import get_api
 import tweepy
 
-api = utility.get_api()
+api = get_api()
 
 
 def get_follower_list():
