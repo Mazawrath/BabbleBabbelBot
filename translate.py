@@ -131,9 +131,8 @@ def translate_text(language_from, language_to, translate_text):
 
 
 def generate_random_nums(size):
-    retval = []
     while True:
-        retval.append(0)
+        retval = [0]
         retval.extend(random.sample(range(0, 32), size))
         # If there are no duplicates in the array and the first/last language isn't english, break
         if len(retval) == len(set(retval)) and not retval[1] == 0 and not retval[size - 1] == 0:
