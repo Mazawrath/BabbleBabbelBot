@@ -6,6 +6,10 @@ __pycache__/
 # Confidential info
 credentials.py
 
+# Tweets
+Tweets/Approved/*
+Tweets/Pending/*
+
 # PyCharm stuff
 .idea/*
 
