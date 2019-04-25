@@ -8,16 +8,13 @@ follower_list = get_follower_list(api)
 
 
 def record_tweet(status):
-    final_dir = '/Tweets/Pending/' + status.id_str
+    final_dir = os.path.dirname(os.path.realpath(__file__)) + '/Tweets/Pending/'
     if not os.path.exists(final_dir):
         os.makedirs(final_dir)
 
-    f = open(final_dir + '/info.txt', 'w+')
+    f = open(final_dir + status.id_str + '.txt', 'w+')
     f.write(status.user.screen_name + '\n')
     f.write(str(status.user.created_at) + '\n')
-    f.close()
-
-    f = open(final_dir + '/tweet.txt', 'w+')
     if status.truncated:
         f.write(status.extended_tweet["full_text"])
     else:
