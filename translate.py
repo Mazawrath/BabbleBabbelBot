@@ -118,8 +118,8 @@ def get_language_dir(value):
         return 'vi'
 
 
-def translate_text(language_to, translate_text):
-    params = '&to=' + language_to
+def translate_text(language_from, language_to, translate_text):
+    params = '&from=' + language_from + '&to=' + language_to
     constructed_url = base_url + path + params
 
     body = [{
@@ -131,10 +131,12 @@ def translate_text(language_to, translate_text):
 
 
 def generate_random_nums(size):
+    retval = []
     while True:
-        retval = random.sample(range(0, 32), size)
+        retval.append(0)
+        retval.extend(random.sample(range(0, 32), size))
         # If there are no duplicates in the array and the first/last language isn't english, break
-        if len(retval) == len(set(retval)) and not retval[0] == 0 and not retval[size - 1] == 0:
+        if len(retval) == len(set(retval)) and not retval[1] == 0 and not retval[size - 1] == 0:
             break
     return retval
 
@@ -143,8 +145,9 @@ def get_translated_tweet(text):
     output = text
     # Generate numbers to translate to each language
     translate_nums = generate_random_nums(10)
-    for i in range(len(translate_nums)):
-        output = translate_text(get_language_dir(translate_nums[i]), output)
+    i = 0
+    for i in range(len(translate_nums) - 1):
+        output = translate_text(get_language_dir(translate_nums[i]), get_language_dir(translate_nums[i + 1]), output)
     # Translate back to English
-    output = translate_text(get_language_dir(0), output)
+    output = translate_text(get_language_dir(translate_nums[i + 1]), get_language_dir(0), output)
     return output
