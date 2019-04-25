@@ -1,4 +1,5 @@
 import os
+import re
 import translate
 
 file_path = os.path.dirname(os.path.realpath(__file__)) + '/tweets/'
@@ -11,6 +12,9 @@ for single_tweet in file_list:
     tweet = ''
     for line in pending_tweet:
         tweet = tweet + line
+    tweet.rstrip()
+    # Remove URL's
+    tweet = re.sub(r'(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&\'\(\)\*\+,;=.]+', "", tweet)
     pending_tweet.close()
     print('tweet by: @' + screen_name)
     print('tweeted at: ' + tweet_time)
@@ -21,11 +25,13 @@ for single_tweet in file_list:
     if keyboard == 'y':
         while True:
             translated_tweet = translate.get_translated_tweet(tweet)
-            tweet_over = 250 - (2 + len(screen_name)) - len(translated_tweet)
+            # Remove URL's
+            tweet_over = 250 - 3 - len(translated_tweet)
             if tweet_over < 0:
-                print('Tweet may be cut off.')
+                print('Tweet may be cut off. It\'s ' + str(tweet_over) + ' over.')
                 translated_tweet = translated_tweet[:tweet_over]
-            translated_tweet = translated_tweet + '\n@' + screen_name
+            translated_tweet = '\"' + translated_tweet + '\"\n' + 'https://twitter.com/' + screen_name + '/status/' + single_tweet[
+                                                                                                                      :-4]
             print(translated_tweet)
             keyboard = input('y: Accept tweet\n'
                              'n: Translate again\n'
