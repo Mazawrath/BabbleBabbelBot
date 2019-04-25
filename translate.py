@@ -26,51 +26,96 @@ def get_language_dir(value):
     # Arabic
     elif value == 2:
         return 'ar'
-    # Bangla
-    elif value == 3:
-        return 'bn'
-    # Bosnian (Latin)
-    elif value == 4:
-        return 'bs'
     # Bulgarian
-    elif value == 5:
+    elif value == 3:
         return 'bg'
-    # Cantonese (Traditional)
-    elif value == 6:
-        return 'yue'
     # Catalan
-    elif value == 7:
+    elif value == 4:
         return 'ca'
     # Chinese Simplified
-    elif value == 8:
+    elif value == 5:
         return 'zh-Hans'
-    # Chinese Traditional
-    elif value == 9:
-        return 'zh-Hant'
     # Croatian
-    elif value == 10:
+    elif value == 6:
         return 'hr'
     # Czech
-    elif value == 11:
+    elif value == 7:
         return 'cs'
     # Danish
-    elif value == 12:
+    elif value == 8:
         return 'da'
     # Dutch
-    elif value == 13:
+    elif value == 9:
         return 'nl'
     # Estonian
-    elif value == 14:
+    elif value == 10:
         return 'et'
     # Fijian
-    elif value == 15:
+    elif value == 11:
         return 'fj'
     # Filipino
-    elif value == 16:
+    elif value == 12:
         return 'fil'
     # Finnish
-    elif value == 17:
+    elif value == 13:
         return 'fi'
+    # French
+    elif value == 14:
+        return 'fr'
+    # German
+    elif value == 15:
+        return 'de'
+    # Greek
+    elif value == 16:
+        return 'el'
+    # Hebrew
+    elif value == 17:
+        return 'he'
+    # Hindi
+    elif value == 18:
+        return 'hi'
+    # Hungarian
+    elif value == 19:
+        return 'hu'
+    # Icelandic
+    elif value == 20:
+        return 'is'
+    # Italian
+    elif value == 21:
+        return 'it'
+    # Japanese
+    elif value == 22:
+        return 'ja'
+    # Korean
+    elif value == 23:
+        return 'ko'
+    # Lithuanian
+    elif value == 24:
+        return 'lt'
+    # Norwegian
+    elif value == 25:
+        return 'nb'
+    # Polish
+    elif value == 26:
+        return 'pl'
+    # Romanian
+    elif value == 27:
+        return 'ro'
+    # Russian
+    elif value == 28:
+        return 'ru'
+    # Slovak
+    elif value == 29:
+        return 'sk'
+    # Spanish
+    elif value == 30:
+        return 'es'
+    # Swedish
+    elif value == 31:
+        return 'sv'
+    # Vietnamese
+    elif value == 32:
+        return 'vi'
 
 
 def translate_text(language_to, translate_text):
@@ -87,7 +132,7 @@ def translate_text(language_to, translate_text):
 
 def generate_random_nums(size):
     while True:
-        retval = random.sample(range(0, 17), size)
+        retval = random.sample(range(0, 32), size)
         # If there are no duplicates in the array and the first/last language isn't english, break
         if len(retval) == len(set(retval)) and not retval[0] == 0 and not retval[size - 1] == 0:
             break
