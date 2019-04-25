@@ -3,6 +3,7 @@ from credentials import key_1
 import requests
 import uuid
 import random
+import math
 
 subscriptionKey = key_1
 
@@ -118,8 +119,20 @@ def get_language_dir(value):
         return 'vi'
 
 
-def translate_text(language_from, language_to, translate_text):
+def translate_text_with_from(language_from, language_to, translate_text):
     params = '&from=' + language_from + '&to=' + language_to
+    constructed_url = base_url + path + params
+
+    body = [{
+        'text': translate_text
+    }]
+
+    request = requests.post(constructed_url, headers=headers, json=body)
+    return request.json()[0]['translations'][0]['text']
+
+
+def translate_text_no_from(language_to, translate_text):
+    params = '&to=' + language_to
     constructed_url = base_url + path + params
 
     body = [{
@@ -143,10 +156,12 @@ def generate_random_nums(size):
 def get_translated_tweet(text):
     output = text
     # Generate numbers to translate to each language
-    translate_nums = generate_random_nums(10)
-    i = 0
+    translate_nums = generate_random_nums(15)
     for i in range(len(translate_nums) - 1):
-        output = translate_text(get_language_dir(translate_nums[i]), get_language_dir(translate_nums[i + 1]), output)
+        if i % 2 == 0:
+            output = translate_text_with_from(get_language_dir(translate_nums[i]), get_language_dir(translate_nums[i + 1]), output)
+        else:
+            output = translate_text_no_from(get_language_dir(translate_nums[i + 1]), output)
     # Translate back to English
-    output = translate_text(get_language_dir(translate_nums[i + 1]), get_language_dir(0), output)
+    output = translate_text_no_from(get_language_dir(0), output)
     return output
