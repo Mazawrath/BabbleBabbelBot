@@ -8,7 +8,7 @@ follower_list = get_follower_list(api)
 
 
 def record_tweet(status):
-    final_dir = os.path.dirname(os.path.realpath(__file__)) + '/Tweets/Pending/'
+    final_dir = os.path.dirname(os.path.realpath(__file__)) + '/tweets/pending/'
     if not os.path.exists(final_dir):
         os.makedirs(final_dir)
 

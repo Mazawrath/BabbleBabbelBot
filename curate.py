@@ -1,11 +1,11 @@
 import os
 import translate
 
-file_path = os.path.dirname(os.path.realpath(__file__)) + '/Tweets/'
-file_list = os.listdir(file_path + '/Pending')
+file_path = os.path.dirname(os.path.realpath(__file__)) + '/tweets/'
+file_list = os.listdir(file_path + '/pending')
 
 for single_tweet in file_list:
-    pending_tweet = open(file_path + 'Pending/' + single_tweet, 'r+')
+    pending_tweet = open(file_path + 'pending/' + single_tweet, 'r+')
     screen_name = pending_tweet.readline()
     tweet_time = pending_tweet.readline()
     tweet = ''
@@ -26,7 +26,7 @@ for single_tweet in file_list:
                              'n: Translate again\n'
                              'q: delete tweet\n')
             if keyboard == 'y':
-                completed_tweet = open(file_path + 'Approved/' + single_tweet, 'w+')
+                completed_tweet = open(file_path + 'approved/' + single_tweet, 'w+')
                 completed_tweet.write(translated_tweet)
                 completed_tweet.close()
                 break
@@ -36,5 +36,5 @@ for single_tweet in file_list:
                 break
     elif keyboard == 'q':
         break
-    os.remove(file_path + '/Pending/' + single_tweet)
+    os.remove(file_path + '/pending/' + single_tweet)
 print('All done')
