@@ -3,7 +3,6 @@ from credentials import key_1
 import requests
 import uuid
 import random
-import math
 
 subscriptionKey = key_1
 
