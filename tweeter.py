@@ -18,8 +18,11 @@ def tweet_random():
     tweet.close()
     # Check that tweet isn't empty
     if tweet:
+        os.remove(file_path + file_list[random.randint(0, len(file_list) - 1)])
         api.update_status(tweet_text)
-    os.remove(file_path + file_list[random.randint(0, len(file_list) - 1)])
+    else:
+        os.remove(file_path + file_list[random.randint(0, len(file_list) - 1)])
+        tweet_random()
     return
 
 
@@ -28,6 +31,7 @@ schedule.every().day.at("10:00").do(tweet_random)
 schedule.every().day.at("12:00").do(tweet_random)
 schedule.every().day.at("14:00").do(tweet_random)
 schedule.every().day.at("16:00").do(tweet_random)
+schedule.every().day.at("18:00").do(tweet_random)
 
 while True:
     schedule.run_pending()
