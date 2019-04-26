@@ -2,6 +2,8 @@ from utility import get_api
 import os
 import schedule
 import random
+import tweepy
+import time
 
 api = get_api()
 
@@ -16,13 +18,13 @@ def tweet_random():
     for line in tweet:
         tweet_text = tweet_text + line
     tweet.close()
-    # Check that tweet isn't empty
-    if tweet:
-        os.remove(file_path + file_list[random.randint(0, len(file_list) - 1)])
+    try:
         api.update_status(tweet_text)
-    else:
-        os.remove(file_path + file_list[random.randint(0, len(file_list) - 1)])
+    except tweepy.RateLimitError:
+        time.sleep(15)
         tweet_random()
+    finally:
+        os.remove(file_path + file_list[random.randint(0, len(file_list) - 1)])
     return
 
 
@@ -35,4 +37,4 @@ schedule.every().day.at("18:00").do(tweet_random)
 
 while True:
     schedule.run_pending()
-
+    time.sleep(1)
