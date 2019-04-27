@@ -19,7 +19,7 @@ def tweet_random():
         tweet_text = tweet_text + line
     tweet.close()
     try:
-        print(tweet_text)
+        api.update_status(tweet_text)
     except tweepy.RateLimitError:
         time.sleep(15)
         tweet_random()
