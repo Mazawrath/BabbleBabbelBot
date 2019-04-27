@@ -2,7 +2,6 @@ from utility import get_api, get_follower_list
 import os
 import tweepy
 import re
-import time
 
 api = get_api()
 follower_list = get_follower_list(api)
@@ -38,13 +37,7 @@ class MyStreamListener(tweepy.StreamListener):
                 record_tweet(status)
 
 
-def start_listener():
-    try:
-        my_stream = tweepy.Stream(auth=api.auth, listener=MyStreamListener(), stall_warnings=True)
-        my_stream.filter(follow=follower_list)
-    except:
-        time.sleep(5)
-        start_listener()
+myStreamListener = MyStreamListener()
+myStream = tweepy.Stream(auth=api.auth, listener=myStreamListener, stall_warnings=True)
 
-
-start_listener()
+myStream.filter(follow=follower_list)
