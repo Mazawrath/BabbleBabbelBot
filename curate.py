@@ -5,7 +5,7 @@ import translate
 file_path = os.path.dirname(os.path.realpath(__file__)) + '/tweets/'
 file_list = os.listdir(file_path + '/pending')
 
-for single_tweet in file_list:
+for single_tweet in reversed(file_list):
     pending_tweet = open(file_path + 'pending/' + single_tweet, 'r+')
     screen_name = pending_tweet.readline().rstrip()
     tweet_time = pending_tweet.readline().rstrip()
@@ -19,10 +19,10 @@ for single_tweet in file_list:
     print('tweet by: @' + screen_name)
     print('tweeted at: ' + tweet_time)
     print(tweet)
-    keyboard = input('y: Translate tweet\n'
-                     'n: Delete tweet\n'
-                     'q: quit\n')
-    if keyboard == 'y':
+    keyboard = int(input('1: Translate tweet\n'
+                         '0: Delete tweet\n'
+                         '-1: Quit\n'))
+    if keyboard == 1:
         while True:
             translated_tweet = translate.get_translated_tweet(tweet)
             # Remove URL's
@@ -33,19 +33,19 @@ for single_tweet in file_list:
             translated_tweet = '\"' + translated_tweet + '\"\n' + 'https://twitter.com/' + screen_name + '/status/' + single_tweet[
                                                                                                                       :-4]
             print(translated_tweet)
-            keyboard = input('y: Accept tweet\n'
-                             'n: Translate again\n'
-                             'q: delete tweet\n')
-            if keyboard == 'y':
+            keyboard = int(input('1: Accept tweet\n'
+                                 '2: Translate again\n'
+                                 '0: Delete tweet\n'))
+            if keyboard == 1:
                 completed_tweet = open(file_path + 'approved/' + single_tweet, 'w+')
                 completed_tweet.write(translated_tweet)
                 completed_tweet.close()
                 break
-            elif keyboard == 'n':
+            elif keyboard == 2:
                 continue
-            elif keyboard == 'q':
+            elif keyboard == 0:
                 break
-    elif keyboard == 'q':
+    elif keyboard == -1:
         break
     os.remove(file_path + '/pending/' + single_tweet)
 print('All done')
