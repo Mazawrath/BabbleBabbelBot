@@ -19,12 +19,14 @@ def tweet_random():
         tweet_text = tweet_text + line
     tweet.close()
     try:
-        api.update_status(tweet_text)
+        print(tweet_text)
     except tweepy.RateLimitError:
         time.sleep(15)
         tweet_random()
-    finally:
+    except Exception:
         os.remove(file_path + file_list[random.randint(0, len(file_list) - 1)])
+        tweet_random()
+    os.remove(file_path + file_list[random.randint(0, len(file_list) - 1)])
     return
 
 
