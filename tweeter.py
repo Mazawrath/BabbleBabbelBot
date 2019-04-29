@@ -13,7 +13,8 @@ def tweet_random():
     file_list = os.listdir(file_path)
     if len(file_list) == 0:
         return
-    tweet = open(file_path + file_list[random.randint(0, len(file_list) - 1)], 'r+')
+    file = file_path + file_list[random.randint(0, len(file_list) - 1)]
+    tweet = open(file, 'r+')
     tweet_text = ''
     for line in tweet:
         tweet_text = tweet_text + line
@@ -24,9 +25,9 @@ def tweet_random():
         time.sleep(15)
         tweet_random()
     except Exception:
-        os.remove(file_path + file_list[random.randint(0, len(file_list) - 1)])
+        os.remove(file)
         tweet_random()
-    os.remove(file_path + file_list[random.randint(0, len(file_list) - 1)])
+    os.remove(file)
     return
 
 
