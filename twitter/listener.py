@@ -1,4 +1,4 @@
-from twitter.twitter_utility import authenticate_twitter, get_follower_list
+from twitter.utility import authenticate_twitter, get_follower_list
 import os
 import tweepy
 import re
