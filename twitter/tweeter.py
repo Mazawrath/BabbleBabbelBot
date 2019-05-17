@@ -1,4 +1,4 @@
-from twitter_utility import authenticate_twitter
+from twitter.twitter_utility import authenticate_twitter
 import os
 import schedule
 import random
