@@ -1,10 +1,10 @@
-from utility import get_api, get_follower_list
+from utility import authenticate_twitter, get_follower_list
 import os
 import tweepy
 import re
 import time
 
-api = get_api()
+api = authenticate_twitter()
 follower_list = get_follower_list(api)
 
 

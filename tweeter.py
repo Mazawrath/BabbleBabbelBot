@@ -1,11 +1,11 @@
-from utility import get_api
+from utility import authenticate_twitter
 import os
 import schedule
 import random
 import tweepy
 import time
 
-api = get_api()
+api = authenticate_twitter()
 
 
 def tweet_random():

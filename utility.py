@@ -3,7 +3,7 @@ import tweepy
 import sentry_sdk
 
 
-def get_api():
+def authenticate_twitter():
     sentry_sdk.init(dsn)
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
