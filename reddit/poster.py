@@ -30,7 +30,7 @@ def post_message(comment):
     else:
         raise AttributeError
     message = translate.get_translated_tweet(message) + signature
-    tries = 2
+    tries = 5
     for i in range(tries):
         # noinspection PyUnresolvedReferences
         try:
@@ -39,7 +39,7 @@ def post_message(comment):
             if i < tries - 1:  # i is zero indexed
                 print(e)
                 print('Waiting 900 seconds')
-                time.sleep(900)
+                time.sleep(840 + i * 60)
                 continue
             else:
                 raise
