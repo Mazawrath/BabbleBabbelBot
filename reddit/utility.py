@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from credentials import client_id, client_secret, user_agent, username, password, reddit_dsn
 from praw import Reddit
 from sentry_sdk import init, configure_scope

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import time
 from reddit.utility import *
 from reddit.anti_abuse import *

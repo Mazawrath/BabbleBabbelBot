@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from twitter.utility import authenticate_twitter
 import os
 import schedule
