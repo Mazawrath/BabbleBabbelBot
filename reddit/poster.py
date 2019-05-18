@@ -25,7 +25,7 @@ def post_message(comment):
         # Comment
         if parent.author.name == username:
             print('replying to myself')
-            message = parent.body[:201]
+            message = parent.body[:-207]
         else:
             message = parent.body
     else:
@@ -52,7 +52,8 @@ def comment_listener():
     for comment in reddit.subreddit('test').stream.comments():
         if comment.created_utc < start_time:
             continue
-        if 'u/' + username in comment.body:
+        if 'u/' + username.lower() in comment.body.lower():
+            configure_sentry(comment)
             _thread.start_new_thread(post_message, (comment,))
 
 

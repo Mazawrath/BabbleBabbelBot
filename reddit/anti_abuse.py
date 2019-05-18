@@ -36,19 +36,26 @@ def comment_limit_reached(post):
         return False
 
 
-def is_already_done(post):
+def is_already_done(parent):
     done = False
-    numofr = 0
-    try:
-        repliesarray = post.replies
-        numofr = len(list(repliesarray))
-    except:
-        pass
-    if numofr != 0:
-        for repl in post.replies:
-            if repl.author != None and repl.author.name == username:
+
+    if parent.__class__.__name__ == 'Submission':
+        # Post
+        replies_array = parent.comments
+    elif parent.__class__.__name__ == 'Comment':
+        # Comment
+        try:
+            parent.refresh()
+            replies_array = parent.replies
+        except:
+            pass
+    else:
+        raise AttributeError
+    if len(replies_array) > 0:
+        for reply in replies_array:
+            if 'u/' + username.lower() in reply.body.lower():
                 done = True
-                continue
+                break
     if done:
         return True
     else:
