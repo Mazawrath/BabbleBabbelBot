@@ -1,4 +1,5 @@
 import collections
+from credentials import username
 
 
 # This is simple collection of functions to prevent reddit bots from:
@@ -13,23 +14,23 @@ import collections
 # Note: don't forget to decalre `submissioncount = collections.Counter()` before starting your main loop
 # Note: Here, r = praw.Reddit('unique client identifier')
 
-def is_summon_chain(post):
-    if not post.is_root:
-        parent_comment_id = post.parent_id
-        parent_comment = r.get_info(thing_id=parent_comment_id)
-        if parent_comment.author != None and str(
-                parent_comment.author.name) == 'bot_username':  # TODO put your bot username here
-            return True
-        else:
-            return False
-    else:
-        return False
+# def is_summon_chain(post, reddit):
+#     if not post.is_root:
+#         parent_comment_id = post.parent_id
+#         parent_comment = reddit.get_info(thing_id=parent_comment_id)
+#         if parent_comment.author != None and str(
+#                 parent_comment.author.name) == username:
+#             return True
+#         else:
+#             return False
+#     else:
+#         return False
 
 
 def comment_limit_reached(post):
     global submission_count
     count_of_this = int(float(submission_count[str(post.submission.id)]))
-    if count_of_this > 4:  # TODO change the number accordingly. float("inf") for infinite (Caution!)
+    if count_of_this > 10:
         return True
     else:
         return False
@@ -45,7 +46,7 @@ def is_already_done(post):
         pass
     if numofr != 0:
         for repl in post.replies:
-            if repl.author != None and repl.author.name == 'bot_username':  # TODO put your bot username here
+            if repl.author != None and repl.author.name == username:
                 done = True
                 continue
     if done:
@@ -54,18 +55,18 @@ def is_already_done(post):
         return False
 
 
-def post_reply(reply, post):
-    global submission_count
-    try:
-        a = post.reply(reply)
-        submission_count[str(post.submission.id)] += 1
-        return True
-    except Exception as e:
-        warn("REPLY FAILED: %s @ %s" % (e, post.subreddit))
-        if str(e) == '403 Client Error: Forbidden':
-            print('/r/' + post.subreddit + ' has banned me.')
-            save_changing_variables()
-        return False
+# def post_reply(reply, post):
+#     global submission_count
+#     try:
+#         a = post.reply(reply)
+#         submission_count[str(post.submission.id)] += 1
+#         return True
+#     except Exception as e:
+#         warn("REPLY FAILED: %s @ %s" % (e, post.subreddit))
+#         if str(e) == '403 Client Error: Forbidden':
+#             print('/r/' + post.subreddit + ' has banned me.')
+#             save_changing_variables()
+#         return False
 
 
 submission_count = collections.Counter()
