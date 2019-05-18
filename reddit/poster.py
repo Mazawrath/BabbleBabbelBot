@@ -13,7 +13,6 @@ start_time = time.time()
 def post_message(comment):
     parent = comment.parent()
     if is_already_done(parent):
-        print('Not happening.')
         return
     # This may be cheating, but I have no idea how to tell whether the object is a submission or comment other
     # than doing this ¯\_(ツ)_/¯
@@ -24,13 +23,12 @@ def post_message(comment):
     elif parent.__class__.__name__ == 'Comment':
         # Comment
         if parent.author.name == username:
-            print('replying to myself')
+            # Replying to myself, cut off the signature
             message = parent.body[:-207]
         else:
             message = parent.body
     else:
         raise AttributeError
-    print(message)
     message = translate.get_translated_tweet(message) + signature
     tries = 2
     for i in range(tries):
