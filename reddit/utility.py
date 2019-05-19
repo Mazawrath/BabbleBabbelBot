@@ -21,7 +21,7 @@ def authenticate_reddit():
 def configure_sentry(comment):
     with configure_scope() as scope:
         scope.user = {"id": comment.author.name}
-        scope.set_tag("subreddit", comment.subreddit.name)
+        scope.set_tag("subreddit", comment.subreddit.display_name)
         scope.set_extra("comment_id", comment.id)
-        scope.set_extra("parent_id", comment.parent_id)
-        scope.set_extra("submission_id", comment.link_id)
+        scope.set_extra("parent_id", comment.parent_id[2:])
+        scope.set_extra("submission_id", comment.link_id[2:])
