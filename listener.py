@@ -23,21 +23,34 @@ def record_tweet(status):
         r.write(status.text)
     r.close()
     pending_tweet = open(final_dir + status.id_str + '.txt', 'r+')
-    # Auto translate the tweet
-    in_english = False
-    while not in_english:
-        screen_name = pending_tweet.readline().rstrip()
-        tweet_time = pending_tweet.readline().rstrip()
-        tweet = ''
-        for line in pending_tweet:
-            tweet = tweet + line
-        tweet.rstrip()
-        # Remove URL's
-        tweet = re.sub(r'(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&\'\(\)\*\+,;=.]+', "", tweet)
-        pending_tweet.close()
+    # Store info about the tweet and grab the text
+    screen_name = pending_tweet.readline().rstrip()
+    tweet = ''
+    for line in pending_tweet:
+        tweet = tweet + line
+    tweet.rstrip()
+    # Remove URL's
+    tweet = re.sub(r'(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&\'\(\)\*\+,;=.]+', "", tweet)
+    pending_tweet.close()
+    total_attempts = 0
+    # Translate the tweet
+    while True:
+        total_attempts += 1
         translated_tweet = translate.get_translated_tweet(tweet)
         print(f"Translated to: {translated_tweet}")
-    pending_tweet.close()
+        language = translate.get_language_of_tweet(translated_tweet)
+        # Check if tweet is too long
+        tweet_over = 250 - 7 - len(translated_tweet)
+        # Make sure the tweet is English, the tweet isn't over in characters, and have a maximum attempts
+        if language == 'en' and tweet_over > 0 or total_attempts > 5:
+            break
+    translated_tweet = '\"' + translated_tweet + '\"\n' + 'https://twitter.com/' + screen_name + '/status/' + status.id_str
+    if total_attempts <= 5:
+        # Tweet has been translated, write it to approved
+        completed_tweet = open(os.path.dirname(os.path.realpath(__file__)) + '/tweets/' + 'approved/' + status.id_str + '.txt', 'w+')
+        completed_tweet.write(translated_tweet)
+        completed_tweet.close()
+    os.remove(final_dir + status.id_str + '.txt')
 
 
 class MyStreamListener(tweepy.StreamListener):
