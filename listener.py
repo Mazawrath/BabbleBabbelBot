@@ -43,7 +43,7 @@ def record_tweet(status):
         # Check if tweet is too long
         tweet_over = 250 - 7 - len(translated_tweet)
         # Make sure the tweet is English, the tweet isn't over in characters, and have a maximum attempts
-        if language == 'en' and tweet_over > 0 or total_attempts > 5:
+        if language == 'en' and 0 < tweet_over < 100 or total_attempts > 5:
             break
     translated_tweet = '\"' + translated_tweet + '\"\n' + 'https://twitter.com/' + screen_name + '/status/' + status.id_str
     if total_attempts <= 5:
