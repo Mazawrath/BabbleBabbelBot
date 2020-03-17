@@ -25,6 +25,7 @@ def record_tweet(status):
     pending_tweet = open(final_dir + status.id_str + '.txt', 'r+')
     # Store info about the tweet and grab the text
     screen_name = pending_tweet.readline().rstrip()
+    tweet_time = pending_tweet.readline().rstrip()
     tweet = ''
     for line in pending_tweet:
         tweet = tweet + line
@@ -50,7 +51,7 @@ def record_tweet(status):
         completed_tweet = open(os.path.dirname(os.path.realpath(__file__)) + '/tweets/' + 'approved/' + status.id_str + '.txt', 'w+')
         completed_tweet.write(translated_tweet)
         completed_tweet.close()
-    os.remove(final_dir + status.id_str + '.txt')
+    # os.remove(final_dir + status.id_str + '.txt')
 
 
 class MyStreamListener(tweepy.StreamListener):
