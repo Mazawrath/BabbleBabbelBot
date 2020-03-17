@@ -3,6 +3,7 @@ import os
 import tweepy
 import re
 import time
+import translate
 
 api = get_api()
 follower_list = get_follower_list(api)
@@ -13,14 +14,30 @@ def record_tweet(status):
     if not os.path.exists(final_dir):
         os.makedirs(final_dir)
 
-    f = open(final_dir + status.id_str + '.txt', 'w+')
-    f.write(status.user.screen_name + '\n')
-    f.write(str(status.user.created_at) + '\n')
+    r = open(final_dir + status.id_str + '.txt', 'w+')
+    r.write(status.user.screen_name + '\n')
+    r.write(str(status.user.created_at) + '\n')
     if status.truncated:
-        f.write(status.extended_tweet["full_text"])
+        r.write(status.extended_tweet["full_text"])
     else:
-        f.write(status.text)
-    f.close()
+        r.write(status.text)
+    r.close()
+    pending_tweet = open(final_dir + status.id_str + '.txt', 'r+')
+    # Auto translate the tweet
+    in_english = False
+    while not in_english:
+        screen_name = pending_tweet.readline().rstrip()
+        tweet_time = pending_tweet.readline().rstrip()
+        tweet = ''
+        for line in pending_tweet:
+            tweet = tweet + line
+        tweet.rstrip()
+        # Remove URL's
+        tweet = re.sub(r'(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&\'\(\)\*\+,;=.]+', "", tweet)
+        pending_tweet.close()
+        translated_tweet = translate.get_translated_tweet(tweet)
+        print(f"Translated to: {translated_tweet}")
+    pending_tweet.close()
 
 
 class MyStreamListener(tweepy.StreamListener):
