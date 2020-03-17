@@ -31,12 +31,18 @@ def tweet_random():
     return
 
 
+schedule.every().day.at("00:00").do(tweet_random)
+schedule.every().day.at("02:00").do(tweet_random)
+schedule.every().day.at("04:00").do(tweet_random)
+schedule.every().day.at("06:00").do(tweet_random)
 schedule.every().day.at("08:00").do(tweet_random)
 schedule.every().day.at("10:00").do(tweet_random)
 schedule.every().day.at("12:00").do(tweet_random)
 schedule.every().day.at("14:00").do(tweet_random)
 schedule.every().day.at("16:00").do(tweet_random)
 schedule.every().day.at("18:00").do(tweet_random)
+schedule.every().day.at("20:00").do(tweet_random)
+schedule.every().day.at("22:00").do(tweet_random)
 
 while True:
     schedule.run_pending()
