@@ -9,18 +9,10 @@ api = get_api()
 follower_list = get_follower_list(api)
 
 
-def auto_translate_tweet(dir_path, tweet_id):
-    pending_tweet = open(dir_path + tweet_id + '.txt', 'r+')
-    # Store info about the tweet and grab the text
-    screen_name = pending_tweet.readline().rstrip()
-    tweet_time = pending_tweet.readline().rstrip()
-    tweet = ''
-    for line in pending_tweet:
-        tweet = tweet + line
+def auto_translate_tweet(dir_path, tweet_id, tweet, screen_name):
     tweet.rstrip()
     # Remove URL's
     tweet = re.sub(r'(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&\'\(\)\*\+,;=.]+', "", tweet)
-    pending_tweet.close()
     # Reject tweet if it is too short
     if len(tweet) < 75:
         os.remove(dir_path + tweet_id + '.txt')
@@ -57,11 +49,12 @@ def record_tweet(status):
     r.write(status.user.screen_name + '\n')
     r.write(str(status.user.created_at) + '\n')
     if status.truncated:
-        r.write(status.extended_tweet["full_text"])
+        tweet = status.extended_tweet["full_text"]
     else:
-        r.write(status.text)
+        tweet = status.text
+    r.write(tweet)
     r.close()
-    auto_translate_tweet(final_dir, status.id_str)
+    auto_translate_tweet(final_dir, status.id_str, tweet, status.user.screen_name)
 
 
 class MyStreamListener(tweepy.StreamListener):
