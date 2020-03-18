@@ -164,7 +164,7 @@ def get_language_of_tweet(text):
 def get_translated_tweet(text):
     output = text
     # Generate numbers to translate to each language
-    translate_nums = generate_random_nums(15)
+    translate_nums = generate_random_nums(20)
     for i in range(len(translate_nums) - 1):
         if i % 2 == 0:
             output = translate_text_with_from(get_language_dir(translate_nums[i]), get_language_dir(translate_nums[i + 1]), output)
