@@ -9,12 +9,21 @@ api = get_api()
 
 
 def tweet_random():
+    # Choose a random account to tweet from
     file_path = os.path.dirname(os.path.realpath(__file__)) + '/tweets/approved/'
     file_list = os.listdir(file_path)
     if len(file_list) == 0:
+        # There is no content to tweet, return
         return
-    file = file_path + file_list[random.randint(0, len(file_list) - 1)]
-    tweet = open(file, 'r+')
+    account_dir = file_path + file_list[random.randint(0, len(file_list) - 1)] + '/'
+
+    file_path = account_dir
+    file_list = os.listdir(file_path)
+    if len(file_list) == 0:
+        # Delete the folder since there are no tweets in the account
+        os.rmdir(account_dir)
+    tweet_file = file_path + file_list[random.randint(0, len(file_list) - 1)]
+    tweet = open(tweet_file, 'r+')
     tweet_text = ''
     for line in tweet:
         tweet_text = tweet_text + line
@@ -23,11 +32,15 @@ def tweet_random():
         api.update_status(tweet_text)
     except tweepy.RateLimitError:
         time.sleep(15)
-        tweet_random()
+        return
     except Exception:
-        os.remove(file)
-        tweet_random()
-    os.remove(file)
+        os.remove(tweet_file)
+    # Delete the tweet file since the contents were published
+    os.remove(tweet_file)
+    # Check if there are any remaining tweets in the account directory
+    if len(os.listdir(account_dir)) == 0:
+        # Delete the folder since there are no tweets in the account
+        os.rmdir(account_dir)
     return
 
 

@@ -4,7 +4,6 @@ RUN pip install sentry-sdk
 RUN pip install schedule
 RUN mkdir -p tweets /
 RUN mkdir -p tweets/approved /
-RUN mkdir -p tweets/pending /
 ADD listener.py /
 ADD credentials.py /
 ADD curate.py /
