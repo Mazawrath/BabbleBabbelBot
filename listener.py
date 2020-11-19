@@ -1,9 +1,11 @@
-from utility import get_api, get_follower_list
 import os
-import tweepy
 import re
 import time
+
+import tweepy
+
 import translate
+from utility import get_api, get_follower_list
 
 api = get_api()
 follower_list = get_follower_list(api)
@@ -32,6 +34,7 @@ def auto_translate_tweet(dir_path, tweet_id, tweet, screen_name):
         if translate.get_language_of_tweet(translated_tweet) == 'en' and tweet_over > 0 or total_attempts > 3:
             break
     translated_tweet = '\"' + translated_tweet + '\"\n' + 'https://twitter.com/' + screen_name + '/status/' + tweet_id
+
     # Only try to translate the tweet correctly 3 times, if it goes over that, just give up
     if total_attempts <= 3:
         # Check if the directory for the account exists, if it doesn't create a directory for the account
@@ -45,26 +48,10 @@ def auto_translate_tweet(dir_path, tweet_id, tweet, screen_name):
 
 def record_tweet(status):
     final_dir = os.path.dirname(os.path.realpath(__file__)) + '/tweets/' + 'approved/' + status.user.id_str + '/'
-    # if not os.path.exists(final_dir):
-    #     os.makedirs(final_dir)
-
-    # print('Opening file')
-    # r = open(final_dir + status.id_str + '.txt', 'w+')
-    # r.write(status.user.screen_name + '\n')
-    # r.write(str(status.user.created_at) + '\n')
-    # print('Getting tweet')
     if status.truncated:
         tweet = status.extended_tweet["full_text"]
     else:
         tweet = status.text
-    # print('Writing tweet')
-    # try:
-    #     r.write(tweet)
-    # except Exception:
-    #     raise Exception
-    # print('Closing file')
-    # r.close()
-    # print('File closed')
     auto_translate_tweet(final_dir, status.id_str, tweet, status.user.screen_name)
 
 
