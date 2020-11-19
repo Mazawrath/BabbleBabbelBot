@@ -152,10 +152,19 @@ def generate_random_nums(size):
     return retval
 
 
+def get_language_of_tweet(text):
+    constructed_url = base_url + '/detect?api-version=3.0'
+    body = [{
+        'text': text
+    }]
+    request = requests.post(constructed_url, headers=headers, json=body)
+    return request.json()[0]['language']
+
+
 def get_translated_tweet(text):
     output = text
     # Generate numbers to translate to each language
-    translate_nums = generate_random_nums(15)
+    translate_nums = generate_random_nums(20)
     for i in range(len(translate_nums) - 1):
         if i % 2 == 0:
             output = translate_text_with_from(get_language_dir(translate_nums[i]), get_language_dir(translate_nums[i + 1]), output)
