@@ -24,11 +24,10 @@ def auto_translate_tweet(dir_path, tweet_id, tweet, screen_name):
         total_attempts += 1
         translated_tweet = translate.get_translated_tweet(tweet)
         print(f"Translated to: {translated_tweet}")
-        language = translate.get_language_of_tweet(translated_tweet)
         # Check if tweet is too long
         tweet_over = 250 - 7 - len(translated_tweet)
         # Make sure the tweet is English, the tweet isn't over in characters, and have a maximum attempts
-        if language == 'en' and tweet_over > 0 or total_attempts > 3:
+        if translate.get_language_of_tweet(translated_tweet) == 'en' and tweet_over > 0 or total_attempts > 3:
             break
     translated_tweet = '\"' + translated_tweet + '\"\n' + 'https://twitter.com/' + screen_name + '/status/' + tweet_id
     if total_attempts <= 3:
@@ -45,31 +44,37 @@ def record_tweet(status):
     if not os.path.exists(final_dir):
         os.makedirs(final_dir)
 
+    print('Opening file')
     r = open(final_dir + status.id_str + '.txt', 'w+')
     r.write(status.user.screen_name + '\n')
     r.write(str(status.user.created_at) + '\n')
+    print('Getting tweet')
     if status.truncated:
         tweet = status.extended_tweet["full_text"]
     else:
         tweet = status.text
-    r.write(tweet)
-    r.close()
+    # print('Writing tweet')
+    # try:
+    #     r.write(tweet)
+    # except Exception:
+    #     raise Exception
+    # print('Closing file')
+    # r.close()
+    # print('File closed')
     auto_translate_tweet(final_dir, status.id_str, tweet, status.user.screen_name)
 
 
 class MyStreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
-        # Check that user making status is followed
-        if status.user.id_str in follower_list:
-            # Check that the status is not a retweet
-            if not re.match(r'^RT', status.text, flags=0):
-                print('Tweet from @' + status.user.screen_name)
-                if status.truncated:
-                    print(status.extended_tweet["full_text"])
-                else:
-                    print(status.text)
-                record_tweet(status)
+        # Check that user making status is followed and check that the status is not a retweet
+        if status.user.id_str in follower_list and not re.match(r'^RT', status.text, flags=0):
+            print('Tweet from @' + status.user.screen_name)
+            if status.truncated:
+                print(status.extended_tweet["full_text"])
+            else:
+                print(status.text)
+            record_tweet(status)
 
 
 def start_listener():
