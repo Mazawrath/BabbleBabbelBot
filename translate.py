@@ -127,7 +127,10 @@ def translate_text_with_from(language_from, language_to, translate_text):
     }]
 
     request = requests.post(constructed_url, headers=headers, json=body)
-    return request.json()[0]['translations'][0]['text']
+    if request.status_code == 200:
+        return request.json()[0]['translations'][0]['text']
+    else:
+        raise Exception("Azure error " + request.status_code + ": " + request.reason + ". " + request.text)
 
 
 def translate_text_no_from(language_to, translate_text):
