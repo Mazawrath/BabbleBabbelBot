@@ -13,6 +13,8 @@ def auto_translate_tweet(dir_path, tweet_id, tweet, screen_name):
     tweet.rstrip()
     # Remove URL's
     tweet = re.sub(r'(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&\'\(\)\*\+,;=.]+', "", tweet)
+    # Replace any @ symbols with & so no users get tagged
+    tweet = re.sub("@", "&", tweet)
     # Reject tweet if it is too short
     if len(tweet) < 75:
         os.remove(dir_path + tweet_id + '.txt')
