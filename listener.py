@@ -12,6 +12,7 @@ follower_list = get_follower_list(api)
 
 
 def auto_translate_tweet(dir_path, tweet_id, tweet, screen_name):
+    print("\"Translating\" tweet")
     tweet.rstrip()
     # Remove URL's
     tweet = re.sub(r'(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&\'\(\)\*\+,;=.]+', "", tweet)
